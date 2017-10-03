@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, g
 from flask_restful import Resource
 from flask_httpauth import HTTPBasicAuth
 from models import User
@@ -8,17 +8,12 @@ auth = HTTPBasicAuth()
 
 class Register(Resource):
 
-    def get(self):
-        print('entering get')
-        try:
-            return self.app_service.get_schedule()
-        except:
-            return '400'
-
     def post(self):
         data = request.get_json(force=True)
         try:
-            self.app_service.create_schedule(data)
+            new_user = User(data['username'], data['password'], data['tenancy_ocid'],
+            data['user_ocid'], data['fingerprint'], data['private_key_path'], data['region'])
+            new_user.insert();
             return '200'
         except BaseException as e:
             print('Exception: ', str(e))
@@ -26,15 +21,10 @@ class Register(Resource):
 
 
 class Login(Resource):
-    @auth.get_password
-    def get_password(user):
-        user = User.query.filter_by(username=user)
-        if user:
-            return user.password
-        return None
 
     @auth.login_required
     def get(self, id=None):
+        data = request.get_json(force=True)
         try:
             if not id:
                 return self.app_service.get_appointments()
@@ -52,3 +42,18 @@ class Login(Resource):
         except BaseException as e:
             print('Exception: ', str(e))
             return '400'
+
+    @auth.get_password
+    def get_password(user):
+        user = User.query.filter_by(username=user).first()
+        if user:
+            return user.password
+        return None
+
+    @auth.verify_password
+    def verify_password(username, password):
+        user = User.query.filter_by(username = username).first()
+        if not user or not user.verify_password(password):
+            return False
+        g.user = user
+        return True
