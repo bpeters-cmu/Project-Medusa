@@ -1,11 +1,6 @@
 from cloud_auth import SignedRequestAuth
 
 
-
-
-
-
-
 def get_instances(user):
 
     private_key = ''

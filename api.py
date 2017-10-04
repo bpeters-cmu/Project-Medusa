@@ -3,6 +3,7 @@ from flask_restful import Resource
 from flask_httpauth import HTTPBasicAuth
 from models import User
 import traceback
+import app_service
 
 auth = HTTPBasicAuth()
 
@@ -25,20 +26,13 @@ class Instance(Resource):
     @auth.login_required
     def get(self, id=None):
         data = request.get_json(force=True)
-        try:
 
+        try:
+            return app_service.get_instances(g.user)
 
         except BaseException as e:
             print('Exception: ', str(e))
-            return '400'
-
-    def post(self):
-        data = request.get_json(force=True)
-        try:
-            return self.app_service.create_appointment(data)
-        except BaseException as e:
-            print('Exception: ', str(e))
-            return '400'
+            return '400'    
 
     @auth.get_password
     def get_password(user):
