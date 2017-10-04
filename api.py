@@ -20,7 +20,7 @@ class Register(Resource):
             return '400'
 
 
-class Login(Resource):
+class Instance(Resource):
 
     @auth.login_required
     def get(self, id=None):

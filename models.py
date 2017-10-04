@@ -19,7 +19,6 @@ class User(db.Model):
         self.tenancy_ocid = tenancy_ocid
         self.user_ocid = user_ocid
         self.fingerprint = fingerprint
-        self.private_key_path =
         self.region = region
 
     def hash_password(self, pword):

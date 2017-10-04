@@ -10,9 +10,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = config.db_url
 
 db = SQLAlchemy(app)
 
-from api import Login, Register
+from api import Instance, Register
 
-api.add_resource(Login, '/login')
+api.add_resource(Instance, '/instances')
 api.add_resource(Register, '/register')
 
 if __name__ == '__main__':
