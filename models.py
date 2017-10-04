@@ -49,7 +49,7 @@ class User(db.Model):
                 return
             with open(os.path.join(path, filename), 'wb') as key_file:
                 key_file.write(buff)
-        except BaseException e:
+        except BaseException as e:
             print('Error: ' + str(e))
             return
         self.private_key_path = path + '/' + filename

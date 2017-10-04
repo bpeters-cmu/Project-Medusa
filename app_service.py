@@ -7,7 +7,7 @@ def get_instances(user):
     try:
         with open('C:/Users/benpeter/.oci/oci_api_key.pem') as f:
             private_key = f.read().strip()
-    except BaseException e:
+    except BaseException as e:
         print('Error: ' + str(e))
 
     api_key = "/".join([
