@@ -12,7 +12,7 @@ class Register(Resource):
         data = request.get_json(force=True)
         try:
             new_user = User(data['username'], data['password'], data['tenancy_ocid'],
-            data['user_ocid'], data['fingerprint'], data['private_key_path'], data['region'])
+            data['user_ocid'], data['fingerprint'], data['private_key'], data['region'])
             new_user.insert();
             return '200'
         except BaseException as e:
@@ -26,10 +26,7 @@ class Instance(Resource):
     def get(self, id=None):
         data = request.get_json(force=True)
         try:
-            if not id:
-                return self.app_service.get_appointments()
-            else:
-                return self.app_service.get_appointment(id)
+
 
         except BaseException as e:
             print('Exception: ', str(e))
