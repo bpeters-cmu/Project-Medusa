@@ -1,5 +1,6 @@
 from app import db
 from passlib.apps import custom_app_context as pwd_context
+import os
 
 class User(db.Model):
     __tablename__ = 'User'
@@ -12,13 +13,13 @@ class User(db.Model):
     private_key_path = db.Column(db.String(128))
     region = db.Column(db.String(50))
 
-    def __init__(self, username, password, tenancy_ocid, user_ocid, fingerprint, private_key_path, region):
+    def __init__(self, username, password, tenancy_ocid, user_ocid, fingerprint, private_key, region):
         self.username = username
         self.password = hash_password(password)
         self.tenancy_ocid = tenancy_ocid
         self.user_ocid = user_ocid
         self.fingerprint = fingerprint
-        self.private_key_path = private_key_path
+        self.private_key_path =
         self.region = region
 
     def hash_password(self, pword):
@@ -35,6 +36,24 @@ class User(db.Model):
             print('exception occurred, rolling back db')
             print(str(e))
             db.session.rollback()
+
+
+    def create_key_file(self, private_key):
+        path = '/home/opc/.oci'
+        filename = self.username + '.pem'
+
+        if not os.path.exists(path):
+            os.makedirs(path)
+
+        try:
+            if os.path.join(path,filename).exists():
+                return
+            with open(os.path.join(path, filename), 'wb') as key_file:
+                key_file.write(buff)
+        except BaseException e:
+            print('Error: ' + str(e))
+            return
+        self.private_key_path = path + '/' + filename
 
 
 
