@@ -1,17 +1,17 @@
 from passlib.apps import custom_app_context as pwd_context
 import os
-import app
+from app import db
 
-class User(app.db.Model):
+class User(db.Model):
     __tablename__ = 'User'
-    id = app.db.Column('user_id',app.db.Integer , primary_key=True)
-    username = app.db.Column(app.db.String(15), unique=True , index=True)
-    password = app.db.Column(app.db.String(15))
-    tenancy_ocid = app.db.Column(app.db.String(128))
-    user_ocid = app.db.Column(app.db.String(128))
-    fingerprint = app.db.Column(app.db.String(128))
-    private_key_path = app.db.Column(app.db.String(128))
-    region = app.db.Column(app.db.String(50))
+    id = db.Column('user_id',db.Integer , primary_key=True)
+    username = db.Column(db.String(15), unique=True , index=True)
+    password = db.Column(db.String(15))
+    tenancy_ocid = db.Column(db.String(128))
+    user_ocid = db.Column(db.String(128))
+    fingerprint = db.Column(db.String(128))
+    private_key_path = db.Column(db.String(128))
+    region = db.Column(db.String(50))
 
     def __init__(self, username, password, tenancy_ocid, user_ocid, fingerprint, private_key, region):
         self.username = username
@@ -29,12 +29,12 @@ class User(app.db.Model):
 
     def insert(self):
         try:
-            app.db.session.add(self)
-            app.db.session.commit()
+            db.session.add(self)
+            db.session.commit()
         except BaseException as e:
-            print('exception occurred, rolling back app.db')
+            print('exception occurred, rolling back db')
             print(str(e))
-            app.db.session.rollback()
+            db.session.rollback()
 
 
     def create_key_file(self, private_key):
