@@ -25,6 +25,7 @@ class User(db.Model):
         self.password = pwd_context.encrypt(pword)
 
     def verify_password(self, pword):
+        print('verifying password: ' + pword)
         return pwd_context.verify(pword, self.password)
 
     def insert(self):

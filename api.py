@@ -34,19 +34,12 @@ class Instance(Resource):
             print('Exception: ', str(e))
             return '400'
 
-    @auth.get_password
-    def get_password(user):
-        print('user: ' + user)
-        user = models.User.query.filter_by(username=user).first()
-        if user:
-            return user.password
-        return None
-
     @auth.verify_password
     def verify_password(username, password):
         print('user: ' + username)
-        print('password' + password)
+        print('password: ' + password)
         user = models.User.query.filter_by(username = username).first()
+        print(user.username + ' ' + user.password)
         if not user or not user.verify_password(password):
             return False
         g.user = user
