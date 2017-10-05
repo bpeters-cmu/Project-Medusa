@@ -36,6 +36,7 @@ class Instance(Resource):
 
     @auth.get_password
     def get_password(user):
+        print('user: ' + user)
         user = models.User.query.filter_by(username=user).first()
         if user:
             return user.password
@@ -43,6 +44,8 @@ class Instance(Resource):
 
     @auth.verify_password
     def verify_password(username, password):
+        print('user: ' + username)
+        print('password' = password)
         user = models.User.query.filter_by(username = username).first()
         if not user or not user.verify_password(password):
             return False
