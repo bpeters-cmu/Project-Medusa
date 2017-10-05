@@ -28,7 +28,7 @@ class User(db.Model):
 
     def verify_password(self, pword):
         print('verifying password: ' + pword)
-        print('user pword:' + self.password)
+        print('self' + self)
         print(phash.verify(pword, self.password))
         return phash.verify(pword, self.password)
 
