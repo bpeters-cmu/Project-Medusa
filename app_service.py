@@ -30,4 +30,6 @@ def get_instances(user):
 
     )
     response = requests.get(uri, auth=auth, headers=headers)
+    print(response.status_code)
+    print(response.text)
     return response.json()
