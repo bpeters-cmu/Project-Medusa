@@ -39,7 +39,7 @@ class Instance(Resource):
         print('user:' + username + 'end')
         print('password: ' + password)
         user = models.User.query.filter_by(username = username).first()
-        print(user)
+        print(user.password)
         if not user or not user.verify_password(password):
             return False
         g.user = user
