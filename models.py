@@ -1,4 +1,4 @@
-from passlib.hash import pbdkdf2_sha256 as phash
+from passlib.hash import pbkdf2_sha256 as phash
 import os
 from app import db
 
