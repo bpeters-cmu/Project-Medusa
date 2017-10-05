@@ -24,7 +24,7 @@ class User(db.Model):
     def hash_password(self, pword):
         hashed = phash.hash(pword)
         print(str(hashed))
-        self.password = hashed
+        return hashed
 
     def verify_password(self, pword):
         print('verifying password: ' + pword)
