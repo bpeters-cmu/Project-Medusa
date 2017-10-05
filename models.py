@@ -36,10 +36,12 @@ class User(db.Model):
         try:
             db.session.add(self)
             db.session.commit()
+            return True
         except BaseException as e:
             print('exception occurred, rolling back db')
             print(str(e))
             db.session.rollback()
+            return False
 
 
     def create_key_file(self, private_key):
@@ -50,7 +52,7 @@ class User(db.Model):
             os.makedirs(path)
 
         try:
-            if os.path.join(path,filename).exists():
+            if os.path.exists(path+filename):
                 return
             with open(os.path.join(path, filename), 'wb') as key_file:
                 key_file.write(buff)

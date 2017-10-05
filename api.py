@@ -14,8 +14,9 @@ class Register(Resource):
         try:
             new_user = models.User(data['username'], data['password'], data['tenancy_ocid'],
             data['user_ocid'], data['fingerprint'], data['private_key'], data['region'])
-            new_user.insert();
-            return '200'
+            if new_user.insert():
+                return '200'
+            return '400'
         except BaseException as e:
             print('Exception: ', str(e))
             return '400'
