@@ -59,6 +59,10 @@ class User(db.Model):
             return
         self.private_key_path = path + '/' + filename
 
+    def __str__(self):
+        return self.username + ' ' + self.password
+
+
 
 
 #tenancy_ocid, user_ocid, fingerprint, private_key_path, region
