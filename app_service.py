@@ -17,12 +17,15 @@ def get_instances(user):
     user.user_ocid,
     user.fingerprint
     ])
+    print(api_key)
 
+    print('SignedRequestAuth enter')
     auth = SignedRequestAuth(api_key, private_key)
     headers = {
     "content-type": "application/json",
     "date": email.utils.formatdate(usegmt=True),
     }
+    print('exit')
 
     # GET with query parameters
     uri = "https://iaas.us-phoenix-1.oraclecloud.com/20160918/instances?availabilityDomain={availability_domain}&compartmentId={compartment_id}"
