@@ -22,7 +22,9 @@ class User(db.Model):
         self.region = region
 
     def hash_password(self, pword):
-        self.password = phash.hash(pword)
+        hashed = phash.hash(pword)
+        print(str(hashed))
+        self.password = hashed
 
     def verify_password(self, pword):
         print('verifying password: ' + pword)
