@@ -7,7 +7,7 @@ import app_service
 auth = HTTPBasicAuth()
 
 class Register(Resource):
-    def __init__():
+    def __init__(self):
         from models import User
 
     def post(self):
