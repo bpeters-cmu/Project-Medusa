@@ -55,7 +55,7 @@ class User(db.Model):
             if os.path.exists(path+filename):
                 return
             with open(os.path.join(path, filename), 'wb') as key_file:
-                key_file.write(buff)
+                key_file.write(private_key)
         except BaseException as e:
             print('Error: ' + str(e))
             return
