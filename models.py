@@ -5,8 +5,8 @@ from app import db
 class User(db.Model):
     __tablename__ = 'User'
     id = db.Column('user_id',db.Integer , primary_key=True)
-    username = db.Column(db.String(15), unique=True , index=True)
-    password = db.Column(db.String(15))
+    username = db.Column(db.String(25), unique=True , index=True)
+    password = db.Column(db.String(128))
     tenancy_ocid = db.Column(db.String(128))
     user_ocid = db.Column(db.String(128))
     fingerprint = db.Column(db.String(128))
