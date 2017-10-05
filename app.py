@@ -16,4 +16,4 @@ api.add_resource(Instance, '/instances')
 api.add_resource(Register, '/register')
 
 if __name__ == '__main__':
-    application.run(host='0.0.0.0', debug=False)
+    application.run(host='0.0.0.0', port='8000', debug=False)
