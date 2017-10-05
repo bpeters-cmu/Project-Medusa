@@ -25,9 +25,9 @@ class Register(Resource):
 class Instance(Resource):
 
     @auth.login_required
-    def get(self, id=None):
-        data = request.get_json(force=True)
-
+    def get(self):
+        print('enter get')
+        
         try:
             return app_service.get_instances(g.user)
 
@@ -43,5 +43,6 @@ class Instance(Resource):
         print(user)
         if not user or not user.verify_password(password):
             return False
+        print('User verified')
         g.user = user
         return True
