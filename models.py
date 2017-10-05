@@ -15,7 +15,7 @@ class User(db.Model):
 
     def __init__(self, username, password, tenancy_ocid, user_ocid, fingerprint, private_key, region):
         self.username = username
-        self.password = hash_password(password)
+        self.password = self.hash_password(password)
         self.tenancy_ocid = tenancy_ocid
         self.user_ocid = user_ocid
         self.fingerprint = fingerprint
