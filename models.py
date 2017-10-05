@@ -20,6 +20,7 @@ class User(db.Model):
         self.user_ocid = user_ocid
         self.fingerprint = fingerprint
         self.region = region
+        self.private_key_path = self.create_key_file(private_key)
 
     def hash_password(self, pword):
         hashed = phash.hash(pword)
@@ -56,7 +57,7 @@ class User(db.Model):
         except BaseException as e:
             print('Error: ' + str(e))
             return
-        self.private_key_path = path + '/' + filename
+        return path + '/' + filename
 
     def __str__(self):
         return self.username + ' ' + self.password
