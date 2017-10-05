@@ -2,6 +2,8 @@ from cloud_auth import SignedRequestAuth
 
 
 def get_instances(user):
+    print('get_instances')
+    print(user)
 
     private_key = ''
     try:
@@ -29,6 +31,7 @@ def get_instances(user):
     compartment_id="ocid1.compartment.oc1..aaaaaaaav2n5hgf5jkd2x3jnwei7dgffdr2awqe5joykt2ma76nz7pzdxyca".replace(":", "%3A")
 
     )
+    print('querying OCI api')
     response = requests.get(uri, auth=auth, headers=headers)
     print(response.status_code)
     print(response.text)
