@@ -36,10 +36,10 @@ class Instance(Resource):
 
     @auth.verify_password
     def verify_password(username, password):
-        print('user: ' + username)
+        print('user:' + username + 'end')
         print('password: ' + password)
         user = models.User.query.filter_by(username = username).first()
-        print(user.username + ' ' + user.password)
+        print(user)
         if not user or not user.verify_password(password):
             return False
         g.user = user
