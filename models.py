@@ -1,4 +1,4 @@
-from passlib.apps import custom_app_context as pwd_context
+from passlib.hash import pbdkdf2_sha256 as phash
 import os
 from app import db
 
@@ -22,12 +22,12 @@ class User(db.Model):
         self.region = region
 
     def hash_password(self, pword):
-        self.password = pwd_context.encrypt(pword)
+        self.password = phash.hash(pword)
 
     def verify_password(self, pword):
         print('verifying password: ' + pword)
-        print(pwd_context.verify(pword, self.password))
-        return pwd_context.verify(pword, self.password)
+        print(phash.verify(pword, self.password))
+        return phash.verify(pword, self.password)
 
     def insert(self):
         try:
