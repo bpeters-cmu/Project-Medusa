@@ -1,12 +1,12 @@
-from passlib.apps import custom_app_context as pwd_context
+from passlib.hash import pbkdf2_sha256 as phash
 import os
 from app import db
 
 class User(db.Model):
     __tablename__ = 'User'
     id = db.Column('user_id',db.Integer , primary_key=True)
-    username = db.Column(db.String(15), unique=True , index=True)
-    password = db.Column(db.String(15))
+    username = db.Column(db.String(25), unique=True , index=True)
+    password = db.Column(db.String(128))
     tenancy_ocid = db.Column(db.String(128))
     user_ocid = db.Column(db.String(128))
     fingerprint = db.Column(db.String(128))
@@ -15,26 +15,33 @@ class User(db.Model):
 
     def __init__(self, username, password, tenancy_ocid, user_ocid, fingerprint, private_key, region):
         self.username = username
-        self.password = hash_password(password)
+        self.password = self.hash_password(password)
         self.tenancy_ocid = tenancy_ocid
         self.user_ocid = user_ocid
         self.fingerprint = fingerprint
         self.region = region
+        self.private_key_path = self.create_key_file(private_key)
 
     def hash_password(self, pword):
-        self.password = pwd_context.encrypt(pword)
+        hashed = phash.hash(pword)
+        print(str(hashed))
+        return hashed
 
     def verify_password(self, pword):
-        return pwd_context.verify(pword, self.password)
+        print('verifying password: ' + pword)
+        print(phash.verify(pword, self.password))
+        return phash.verify(pword, self.password)
 
     def insert(self):
         try:
             db.session.add(self)
             db.session.commit()
+            return True
         except BaseException as e:
             print('exception occurred, rolling back db')
             print(str(e))
             db.session.rollback()
+            return False
 
 
     def create_key_file(self, private_key):
@@ -45,14 +52,18 @@ class User(db.Model):
             os.makedirs(path)
 
         try:
-            if os.path.join(path,filename).exists():
+            if os.path.exists(path+filename):
                 return
-            with open(os.path.join(path, filename), 'wb') as key_file:
-                key_file.write(buff)
+            with open(os.path.join(path, filename), 'w') as key_file:
+                key_file.write(private_key)
         except BaseException as e:
             print('Error: ' + str(e))
             return
-        self.private_key_path = path + '/' + filename
+        return path + '/' + filename
+
+    def __str__(self):
+        return self.username + ' ' + self.password
+
 
 
 

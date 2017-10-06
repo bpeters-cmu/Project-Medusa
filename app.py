@@ -3,12 +3,12 @@ from flask_restful import Resource, Api
 from flask_sqlalchemy import SQLAlchemy
 import config
 
-app = Flask(__name__)
-api = Api(app)
+application = Flask(__name__)
+api = Api(application)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = config.db_url
+application.config['SQLALCHEMY_DATABASE_URI'] = config.db_url
 
-db = SQLAlchemy(app)
+db = SQLAlchemy(application)
 
 from api import Instance, Register
 
@@ -16,4 +16,4 @@ api.add_resource(Instance, '/instances')
 api.add_resource(Register, '/register')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0:5555',debug=False)
+    application.run(host='0.0.0.0', port='8000', debug=False)
