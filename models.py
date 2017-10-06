@@ -64,6 +64,45 @@ class User(db.Model):
     def __str__(self):
         return self.username + ' ' + self.password
 
+    def create_client(self, client_username, client_password, hostname):
+        client = ClientUser(client_username, client_password, hostname, self.id)
+        client.insert()
+
+
+class ClientUser(db.Model):
+    __tablename__ = 'ClientUser'
+    id = db.Column('user_id',db.Integer , primary_key=True)
+    username = db.Column(db.String(25), unique=True , index=True)
+    password = db.Column(db.String(128))
+    hostname = db.Column(db.String(25))
+    admin_id = db.Column(db.Integer, db.ForeignKey('User.user_id'), nullable=False)
+
+    def __init__(self, username, password, hostname, admin_id):
+        self.username = username
+        self.password = self.hash_password(password)
+        self.hostname = hostname
+        self.admin_id = admin_id
+
+    def hash_password(self, pword):
+        hashed = phash.hash(pword)
+        print(str(hashed))
+        return hashed
+
+    def verify_password(self, pword):
+        print('verifying password: ' + pword)
+        print(phash.verify(pword, self.password))
+        return phash.verify(pword, self.password)
+
+    def insert(self):
+        try:
+            db.session.add(self)
+            db.session.commit()
+            return True
+        except BaseException as e:
+            print('exception occurred, rolling back db')
+            print(str(e))
+            db.session.rollback()
+            return False
 
 
 
