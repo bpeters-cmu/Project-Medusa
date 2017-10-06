@@ -1,4 +1,5 @@
 from cloud_auth import SignedRequestAuth
+import email.utils
 
 
 def get_instances(user):
@@ -8,7 +9,7 @@ def get_instances(user):
     private_key = ''
     try:
         with open(user.private_key_path) as f:
-            private_key = f.read()
+            private_key = f.read().strip()
             print(private_key)
     except BaseException as e:
         print('Error: ' + str(e))
