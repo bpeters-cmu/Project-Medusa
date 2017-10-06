@@ -8,7 +8,7 @@ def get_instances(user):
     private_key = ''
     try:
         with open(user.private_key_path) as f:
-            private_key = f.read().strip()
+            private_key = f.read()
             print(private_key)
     except BaseException as e:
         print('Error: ' + str(e))
