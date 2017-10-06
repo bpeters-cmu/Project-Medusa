@@ -1,5 +1,6 @@
 from cloud_auth import SignedRequestAuth
 import email.utils
+import requests
 
 
 def get_instances(user):
