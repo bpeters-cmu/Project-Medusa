@@ -15,11 +15,11 @@ class Register(Resource):
             new_user = models.User(data['username'], data['password'], data['tenancy_ocid'],
             data['user_ocid'], data['fingerprint'], data['private_key'], data['region'])
             if new_user.insert():
-                return '200'
-            return '400'
+                return 'OK',200
+            return 'User Create Failed', 400
         except BaseException as e:
             print('Exception: ', str(e))
-            return '400'
+            return str(e), 400
 
 
 class Instance(Resource):
@@ -27,13 +27,13 @@ class Instance(Resource):
     @auth.login_required
     def get(self):
         print('enter get')
-        
+
         try:
-            return app_service.get_instances(g.user)
+            return app_service.get_instances(g.user),200
 
         except BaseException as e:
             print('Exception: ', str(e))
-            return '400'
+            return 'Exception Occurred', 400
 
     @auth.verify_password
     def verify_password(username, password):

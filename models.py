@@ -1,6 +1,8 @@
 from passlib.hash import pbkdf2_sha256 as phash
-import os
 from app import db
+import os
+import json
+import jwt
 
 class User(db.Model):
     __tablename__ = 'User'
@@ -75,6 +77,7 @@ class ClientUser(db.Model):
     username = db.Column(db.String(25), unique=True , index=True)
     password = db.Column(db.String(128))
     hostname = db.Column(db.String(25))
+    conn_type = db.Column(db.String(3))
     admin_id = db.Column(db.Integer, db.ForeignKey('User.user_id'), nullable=False)
 
     def __init__(self, username, password, hostname, admin_id):
@@ -103,6 +106,18 @@ class ClientUser(db.Model):
             print(str(e))
             db.session.rollback()
             return False
+
+    def get_token(self):
+        json_data = {}
+        json_data['connection']['type'] = self.conn_type
+        json_data['connection']['settings']['hostname'] = self.hostname
+        json_data['connection']['settings']['username'] = self.username
+        json_data['connection']['settings']['password'] = self.password
+        json_obj = json.dumps(json_data)
+        encoded = jwt.encode(json_obj, 'temp_secret', algorithm='HS256')
+        return encoded
+
+
 
 
 

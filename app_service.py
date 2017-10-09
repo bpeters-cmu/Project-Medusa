@@ -1,6 +1,8 @@
 from cloud_auth import SignedRequestAuth
+from subprocess import call
 import email.utils
 import requests
+
 
 
 def get_instances(user):
@@ -42,3 +44,6 @@ def get_instances(user):
     print(response.status_code)
     print(response.text)
     return response.json()
+
+def terraform_create():
+    
