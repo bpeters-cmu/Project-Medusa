@@ -57,3 +57,27 @@ class Instance(Resource):
         print('User verified')
         g.user = user
         return True
+
+class Connection(Resource):
+
+    @auth.login_required
+    def get(self):
+        print('enter get')
+        try:
+            return g.user.get_token()
+
+        except BaseException as e:
+            print('Exception: ', str(e))
+            return 'Exception Occurred', 400
+
+    @auth.verify_password
+    def verify_password(username, password):
+        print('user:' + username + 'end')
+        print('password: ' + password)
+        user = models.ClientUser.query.filter_by(username = username).first()
+        print(user)
+        if not user or not user.verify_password(password):
+            return False
+        print('User verified')
+        g.user = user
+        return True
