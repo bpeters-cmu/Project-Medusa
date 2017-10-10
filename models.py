@@ -1,8 +1,9 @@
 from passlib.hash import pbkdf2_sha256 as phash
 from app import db
+from Crypto.Cipher import AES
 import os
 import json
-import jwt
+import base64
 
 class User(db.Model):
     __tablename__ = 'User'
@@ -113,9 +114,9 @@ class ClientUser(db.Model):
         json_data['connection']['settings']['hostname'] = self.hostname
         json_data['connection']['settings']['username'] = self.username
         json_data['connection']['settings']['password'] = self.password
-        json_obj = json.dumps(json_data)
-        encoded = jwt.encode(json_obj, 'temp_secret', algorithm='HS256')
-        return encoded
+        token = json.dumps(json_data).encode('utf-8')
+
+        return base64.urlsafe_b64encode(token)
 
 
 

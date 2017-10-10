@@ -27,13 +27,24 @@ class Instance(Resource):
     @auth.login_required
     def get(self):
         print('enter get')
-
         try:
             return app_service.get_instances(g.user),200
 
         except BaseException as e:
             print('Exception: ', str(e))
             return 'Exception Occurred', 400
+
+    @auth.login_required
+    def post(self):
+        print('post')
+        try:
+            return app_service.terraform_create(), 200
+
+        except BaseException as e:
+            print('Exception: ', str(e))
+            return 'Exception Occurred', 400
+
+
 
     @auth.verify_password
     def verify_password(username, password):
