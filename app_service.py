@@ -46,4 +46,4 @@ def get_instances(user):
     return response.json()
 
 def terraform_create():
-    
+    print('creating instances')

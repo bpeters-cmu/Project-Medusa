@@ -81,3 +81,31 @@ class Connection(Resource):
         print('User verified')
         g.user = user
         return True
+
+class Client(Resource):
+
+    @auth.login_required
+    def post(self):
+        data = request.get_json(force=True)
+        try:
+            new_user = models.ClientUser(data['username'], data['password'], data['hostname'],
+            g.user.id)
+            if new_user.insert():
+                return 'OK',200
+            return 'User Create Failed', 400
+        except BaseException as e:
+            print('Exception: ', str(e))
+            return str(e), 400
+
+
+    @auth.verify_password
+    def verify_password(username, password):
+        print('user:' + username + 'end')
+        print('password: ' + password)
+        user = models.User.query.filter_by(username = username).first()
+        print(user)
+        if not user or not user.verify_password(password):
+            return False
+        print('User verified')
+        g.user = user
+        return True
